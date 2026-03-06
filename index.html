@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercise Solvers - Smart Study Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-red: #e53935;
+            --dark-red: #c62828;
+            --light-red: #ff5252;
+            --white: #ffffff;
+            --light-gray: #f5f5f5;
+            --mid-gray: #9e9e9e;
+            --dark-gray: #212121;
+            --black: #000000;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dark-gray);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-color: var(--white);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background-color: var(--primary-red);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+
+        .btn:hover:after {
+            animation: ripple 1s ease-out;
+        }
+
+        .btn:hover {
+            background-color: var(--dark-red);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary-red);
+            color: var(--primary-red);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--primary-red);
+            color: var(--white);
+        }
+
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+            font-size: 2.5rem;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-red);
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        header.scrolled {
+            padding: 10px 0;
+            background-color: var(--white);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo-text {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--primary-red);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0 15px;
+            position: relative;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-link:hover {
+            color: var(--primary-red);
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-red);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1498243691581-b145c3f54a5a?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            z-index: -1;
+            transform: scale(1.1);
+            transition: transform 0.5s ease-out;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            transform: translateY(20px);
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.5s;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        /* Particle Effect */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-1000px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* About Section */
+        .about {
+            background-color: var(--white);
+        }
+
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-cards {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            min-width: 300px;
+        }
+
+        .card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-red), var(--dark-red));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover:before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* Author Section */
+        .author {
+            background-color: var(--light-gray);
+        }
+
+        .author-content {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .author-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+            position: relative;
+        }
+
+        .author-image:before {
+            content: '';
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: 15px;
+            bottom: 15px;
+            border: 3px solid var(--primary-red);
+            border-radius: 8px;
+            z-index: -1;
+            transition: var(--transition);
+        }
+
+        .author-image:hover:before {
+            top: 15px;
+            left: 15px;
+            right: -15px;
+            bottom: -15px;
+        }
+
+        .author-image .icon-container {
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            color: white;
+            font-size: 4rem;
+        }
+
+        .author-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .author-bio {
+            margin-bottom: 20px;
+        }
+
+        .author-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .detail-tab {
+            padding: 10px 20px;
+            background-color: var(--white);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .detail-tab.active {
+            background-color: var(--primary-red);
+            color: var(--white);
+        }
+
+        .detail-content {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        /* Features Section */
+        .features {
+            background-color: var(--white);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            transform-style: preserve-3d;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(229, 57, 53, 0.1) 0%, rgba(198, 40, 40, 0.1) 100%);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover:before {
+            opacity: 1;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) rotateY(5deg);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-red);
+            margin-bottom: 20px;
+        }
+
+        /* Videos Section */
+        .videos {
+            background-color: var(--light-gray);
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .video-card {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-thumb {
+            position: relative;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: var(--mid-gray);
+        }
+
+        .video-thumb iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-info {
+            padding: 15px;
+            background-color: var(--white);
+        }
+
+        .video-title {
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+
+        .video-desc {
+            font-size: 0.9rem;
+            color: var(--mid-gray);
+        }
+
+        /* Subscription Section */
+        .subscription {
+            background: linear-gradient(135deg, var(--primary-red) 0%, var(--dark-red) 100%);
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subscription:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%);
+            transform: rotate(30deg);
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            background-color: var(--white);
+        }
+
+        .testimonial-slider {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-slide {
+            min-width: 100%;
+            padding: 0 20px;
+        }
+
+        .testimonial-card {
+            background-color: var(--light-gray);
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            position: relative;
+        }
+
+        .testimonial-card:before {
+            content: '\201C';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 4rem;
+            color: var(--primary-red);
+            opacity: 0.3;
+            font-family: Georgia, serif;
+        }
+
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+
+        .testimonial-author {
+            font-weight: 500;
+            color: var(--primary-red);
+        }
+
+        .slider-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 10px;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--mid-gray);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .slider-dot.active {
+            background-color: var(--primary-red);
+            transform: scale(1.2);
+        }
+
+        /* Blog Section */
+        .blog {
+            background-color: var(--light-gray);
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .blog-card {
+            position: relative;
+            height: 300px;
+            perspective: 1000px;
+        }
+
+        .blog-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+        }
+
+        .blog-card:hover .blog-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .blog-card-front, .blog-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .blog-card-front {
+            background-color: var(--primary-red);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .blog-card-back {
+            background-color: var(--white);
+            transform: rotateY(180deg);
+            justify-content: flex-start;
+        }
+
+        .blog-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .blog-excerpt {
+            font-size: 0.9rem;
+            color: var(--mid-gray);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            color: var(--white);
+            padding: 60px 0 30px;
+            position: relative;
+        }
+
+        .footer-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-title {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--primary-red);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-link {
+            margin-bottom: 10px;
+            transition: var(--transition);
+        }
+
+        .footer-link:hover {
+            color: var(--primary-red);
+            transform: translateX(5px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background-color: var(--primary-red);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: var(--mid-gray);
+        }
+
+        /* 3-Dots Menu */
+        .dots-menu {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 999;
+        }
+
+        .dots-menu-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--primary-red);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .dots-menu-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .dots-menu-content {
+            position: absolute;
+            top: 0;
+            right: 60px;
+            width: 250px;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition);
+            transform: translateX(20px);
+        }
+
+        .dots-menu-content.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .dots-menu-link {
+            display: block;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+        }
+
+        .dots-menu-link:hover {
+            color: var(--primary-red);
+            padding-left: 5px;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 1;
+            }
+            20% {
+                transform: scale(25, 25);
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: scale(40, 40);
+            }
+        }
+
+        /* Parallax Effect */
+        .parallax {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.8rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                width: 250px;
+                height: calc(100vh - 70px);
+                background-color: var(--white);
+                flex-direction: column;
+                padding: 40px 20px;
+                transition: var(--transition);
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            }
+            
+            .nav-menu.active {
+                right: 0;
+            }
+            
+            .nav-item {
+                margin: 15px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                padding: 80px 0;
+            }
+            
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .hero-btns {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+            
+            .about-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .author-image, .author-info, .about-text {
+                min-width: 100%;
+            }
+            
+            .dots-menu {
+                right: 10px;
+                bottom: 20px;
+                top: auto;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="header-container container">
+            <div class="logo">
+                <div class="logo-text">Exercise Solvers</div>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item"><a href="#" class="nav-link">Home</a></li>
+                <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
+                <li class="nav-item"><a href="#author" class="nav-link">Author</a></li>
+                <li class="nav-item"><a href="#features" class="nav-link">Features</a></li>
+                <li class="nav-item"><a href="#videos" class="nav-link">Videos</a></li>
+                <li class="nav-item"><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                <li class="nav-item"><a href="#blog" class="nav-link">Blog</a></li>
+                <li class="nav-item"><a href="#subscribe" class="nav-link">Subscribe</a></li>
+            </ul>
+            
+            <div class="mobile-menu-btn" id="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-bg parallax"></div>
+        <div class="particles" id="particles"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Exercise Solvers</h1>
+            <p class="hero-subtitle">Smart Study Solutions for Academic Success</p>
+            <div class="hero-btns">
+                <a href="https://www.youtube.com/@ExerciseSolver" target="_blank" class="btn">Visit Channel</a>
+                <a href="#subscribe" class="btn btn-outline">Subscribe Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="container">
+            <h2 class="section-title">About Exercise Solvers</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Exercise Solvers is designed to help students prepare smarter, not harder. The channel provides concise, time-saving explanations, practical tricks, and shortcuts that simplify complex problems, making learning accessible to everyone.</p>
+                    <p>Our mission is to transform the way students approach their studies by providing effective strategies that boost understanding, retention, and exam performance.</p>
+                </div>
+                <div class="about-cards">
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3 class="card-title">Quick Solutions</h3>
+                        <p>Short, easy-to-understand solutions for students</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <h3 class="card-title">Exam Tips</h3>
+                        <p>Time-saving tricks and smart strategies for higher scores</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <h3 class="card-title">Revision Techniques</h3>
+                        <p>Efficient last-minute study methods</p>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">
+                            <i class="fas fa-video"></i>
+                        </div>
+                        <h3 class="card-title">Engaging Content</h3>
+                        <p>Interactive videos that hold attention</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Author Section -->
+    <section class="section author" id="author">
+        <div class="container">
+            <h2 class="section-title">Meet NISHAN</h2>
+            <div class="author-content">
+                <div class="author-image">
+                    <div class="icon-container">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                </div>
+                <div class="author-info">
+                    <div class="author-bio">
+                        <p>NISHAN is the creator and host of Exercise Solvers, dedicated to helping students achieve academic excellence through smart study techniques and problem-solving strategies.</p>
+                    </div>
+                    <div class="author-details">
+                        <div class="detail-tab active" data-tab="mission">Mission</div>
+                        <div class="detail-tab" data-tab="vision">Vision</div>
+                        <div class="detail-tab" data-tab="philosophy">Philosophy</div>
+                        <div class="detail-tab" data-tab="achievements">Achievements</div>
+                    </div>
+                    <div class="detail-content">
+                        <div class="detail-text" id="mission-text">
+                            <p>My mission is to democratize quality education by providing free, accessible learning resources that help students understand complex concepts quickly and efficiently.</p>
+                        </div>
+                        <div class="detail-text" id="vision-text" style="display: none;">
+                            <p>I envision a world where every student has the tools and strategies needed to excel academically, regardless of their background or learning style.</p>
+                        </div>
+                        <div class="detail-text" id="philosophy-text" style="display: none;">
+                            <p>I believe that learning should be engaging, efficient, and tailored to individual needs. By focusing on understanding rather than memorization, students can achieve lasting success.</p>
+                        </div>
+                        <div class="detail-text" id="achievements-text" style="display: none;">
+                            <p>With over 5 years of teaching experience, I've helped thousands of students improve their grades and develop confidence in their academic abilities through my unique approach to problem-solving.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section features" id="features">
+        <div class="container">
+            <h2 class="section-title">Channel Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Quick Solutions</h3>
+                    <p>Step-by-step explanations that help you understand problems quickly and efficiently.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h3>Exam Strategies</h3>
+                    <p>Proven techniques to tackle exams with confidence and maximize your scores.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Revision Tricks</h3>
+                    <p>Memory techniques and revision methods that help you retain information longer.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Engaging Content</h3>
+                    <p>Videos designed to keep you interested and motivated throughout your study sessions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Videos Section -->
+    <section class="section videos" id="videos">
+        <div class="container">
+            <h2 class="section-title">Latest Videos</h2>
+            <div class="video-grid">
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <iframe src="https://www.youtube.com/embed/Gr76_8q7s" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Algebra Made Easy</h3>
+                        <p class="video-desc">Learn how to solve complex algebra problems with simple tricks.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <iframe src="https://www.youtube.com/embed/JKwsUVVe1Rc" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Calculus Shortcuts</h3>
+                        <p class="video-desc">Time-saving techniques for solving calculus problems.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <iframe src="https://www.youtube.com/embed/vKTuaIDETNE" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Geometry Explained</h3>
+                        <p class="video-desc">Visual approaches to understanding geometry concepts.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <iframe src="https://www.youtube.com/embed/P8zqSqZuuN4" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Exam Preparation Guide</h3>
+                        <p class="video-desc">How to prepare for exams effectively and reduce stress.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <iframe src="https://www.youtube.com/embed/VHxHYK6GRJA" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Memory Techniques</h3>
+                        <p class="video-desc">Improve your memory retention with these powerful methods.</p>
+                    </div>
+                </div>
+                <div class="video-card">
+                    <div class="video-thumb">
+                        <iframe src="https://www.youtube.com/embed/MedyWKDmnqQ" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">Physics Problem Solving</h3>
+                        <p class="video-desc">Approach physics problems with confidence using these strategies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subscription Section -->
+    <section class="section subscription" id="subscribe">
+        <div class="container">
+            <h2 class="section-title">Join Our Community</h2>
+            <p>Subscribe to Exercise Solvers for regular updates on new videos, study tips, and exclusive content.</p>
+            
+            <a href="https://www.youtube.com/@ExerciseSolver?sub_confirmation=1" target="_blank" class="btn">Subscribe Now</a>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title">Success Stories</h2>
+            <div class="testimonial-slider">
+                <div class="testimonial-track">
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"Exercise Solvers transformed how I study. Their techniques helped me improve my math grade from a C to an A in just one semester!"</p>
+                            <div class="testimonial-author">- Sarah, College Student</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"The exam strategies shared on this channel are game-changers. I aced my finals thanks to these tips!"</p>
+                            <div class="testimonial-author">- Michael, High School Student</div>
+                        </div>
+                    </div>
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <p class="testimonial-text">"I was struggling with physics until I found Exercise Solvers. The clear explanations made everything click!"</p>
+                            <div class="testimonial-author">- Jessica, University Student</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slider-nav">
+                    <div class="slider-dot active"></div>
+                    <div class="slider-dot"></div>
+                    <div class="slider-dot"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="section blog" id="blog">
+        <div class="container">
+            <h2 class="section-title">Study Tips & Articles</h2>
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <div class="blog-card-inner">
+                        <div class="blog-card-front">
+                            <h3 class="blog-title">10 Exam Tips</h3>
+                            <p>Hover to read more</p>
+                        </div>
+                        <div class="blog-card-back">
+                            <h3 class="blog-title">10 Exam Tips</h3>
+                            <p class="blog-excerpt">Discover proven strategies to ace your exams with less stress and better results. These tips have helped thousands of students improve their scores.</p>
+                            <a href="#" class="btn">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-card-inner">
+                        <div class="blog-card-front">
+                            <h3 class="blog-title">Memory Techniques</h3>
+                            <p>Hover to read more</p>
+                        </div>
+                        <div class="blog-card-back">
+                            <h3 class="blog-title">Memory Techniques</h3>
+                            <p class="blog-excerpt">Learn how to improve your memory retention with scientifically-backed methods that make studying more effective and long-lasting.</p>
+                            <a href="#" class="btn">Read More</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-card-inner">
+                        <div class="blog-card-front">
+                            <h3 class="blog-title">Study Schedule</h3>
+                            <p>Hover to read more</p>
+                        </div>
+                        <div class="blog-card-back">
+                            <h3 class="blog-title">Study Schedule</h3>
+                            <p class="blog-excerpt">Create an effective study schedule that maximizes productivity while preventing burnout. Perfect for students with busy schedules.</p>
+                            <a href="#" class="btn">Read More</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3 class="footer-title">Exercise Solvers</h3>
+                    <p>Smart study solutions for academic success. Join our community of learners today!</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home" class="footer-link">Home</a></li>
+                        <li><a href="#about" class="footer-link">About</a></li>
+                        <li><a href="#videos" class="footer-link">Videos</a></li>
+                        <li><a href="#blog" class="footer-link">Blog</a></li>
+                        <li><a href="#subscribe" class="footer-link">Subscribe</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-title">Resources</h3>
+                    <ul class="footer-links">
+                        <li><a href="#" class="footer-link">Study Guides</a></li>
+                        <li><a href="#" class="footer-link">Practice Problems</a></li>
+                        <li><a href="#" class="footer-link">Exam Tips</a></li>
+                        <li><a href="#" class="footer-link">Revision Techniques</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-links">
+                        <li><a href="mailto:ehubconnectivity@gmail.com" class="footer-link">ehubconnectivity@gmail.com</a></li>
+                        <li><a href="#" class="footer-link">Support</a></li>
+                        <li><a href="#" class="footer-link">Feedback</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 Exercise Solvers. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 3-Dots Menu -->
+    <div class="dots-menu">
+        <div class="dots-menu-btn" id="dots-menu-btn">
+            <i class="fas fa-ellipsis-v"></i>
+        </div>
+        <div class="dots-menu-content" id="dots-menu-content">
+            <a href="#about" class="dots-menu-link">About the Author</a>
+            <a href="#features" class="dots-menu-link">Channel Description</a>
+            <a href="#author" class="dots-menu-link">Mission & Vision</a>
+            <a href="#videos" class="dots-menu-link">Teaching Philosophy</a>
+            <a href="#" class="dots-menu-link">Contact Information</a>
+            <a href="#" class="dots-menu-link">Resources & Downloads</a>
+        </div>
+    </div>
+
+    <script>
+        // Header scroll effect
+        window.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('.nav-menu').classList.toggle('active');
+            this.querySelector('i').classList.toggle('fa-bars');
+            this.querySelector('i').classList.toggle('fa-times');
+        });
+
+        // 3-Dots menu toggle
+        document.getElementById('dots-menu-btn').addEventListener('click', function() {
+            document.getElementById('dots-menu-content').classList.toggle('active');
+        });
+
+        // Author detail tabs
+        const detailTabs = document.querySelectorAll('.detail-tab');
+        detailTabs.forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                detailTabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Hide all detail texts
+                document.querySelectorAll('.detail-text').forEach(text => {
+                    text.style.display = 'none';
+                });
+                
+                // Show the corresponding detail text
+                const tabName = this.getAttribute('data-tab');
+                document.getElementById(`${tabName}-text`).style.display = 'block';
+            });
+        });
+
+        // Testimonial slider
+        const track = document.querySelector('.testimonial-track');
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentIndex = 0;
+
+        function goToSlide(index) {
+            track.style.transform = `translateX(-${index * 100}%)`;
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            currentIndex = index;
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+
+        // Auto slide testimonials
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            goToSlide(currentIndex);
+        }, 5000);
+
+        // Parallax effect for hero background
+        window.addEventListener('scroll', function() {
+            const scrolled = window.pageYOffset;
+            const heroBg = document.querySelector('.hero-bg');
+            heroBg.style.transform = `scale(${1 + scrolled * 0.0005})`;
+        });
+
+        // Create particle effect
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const numberOfParticles = 50;
+            
+            for (let i = 0; i < numberOfParticles; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 10 + 2;
+                const posX = Math.random() * 100;
+                const delay = Math.random() * 15;
+                const duration = Math.random() * 10 + 15;
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Animate elements on scroll
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.card, .feature-card, .video-card, .blog-card');
+            
+            elements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.style.opacity = 1;
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        // Initialize elements for animation
+        const animatedElements = document.querySelectorAll('.card, .feature-card, .video-card, .blog-card');
+        animatedElements.forEach(element => {
+            element.style.opacity = 0;
+            element.style.transform = 'translateY(20px)';
+            element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        });
+
+        // Initialize the site
+        window.addEventListener('load', function() {
+            createParticles();
+            animateOnScroll();
+        });
+
+        window.addEventListener('scroll', animateOnScroll);
+    </script>
+</body>
+</html>
